@@ -104,27 +104,29 @@ def login(request):
         else:
             return JsonResponse({"error": "Invalid credentials"}, status=401)
 
-        return JsonResponse(
-            {
-                "status": "success",
-                "accion": "login",
-            }
-        )
-
     else:
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
 @csrf_exempt
-def profile(request):
-    if request.method == "POST":
+def profile(request, id):
+    if request.method == "GET":
 
-        return JsonResponse(
-            {
-                "status": "success",
-                "accion": "Profile",
-            }
-        )
+        if id:
+            try:
+                user_id = int(id)
+            except (ValueError, TypeError):
+                return JsonResponse(
+                    {"error": "Invalid user ID. Must be an integer."}, status=400
+                )
+            try:
+                user = User.objects.get(id=user_id)
+                userSerializer = UserSerializer(user, many=False)
+                return JsonResponse({"status": "success", "user": userSerializer.data})
+            except User.DoesNotExist:
+                return JsonResponse({"error": "User not found"}, status=404)
+        else:
+            return JsonResponse({"error": "Invalid user ID"}, status=400)
 
     else:
         return JsonResponse({"error": "Method not allowed"}, status=405)

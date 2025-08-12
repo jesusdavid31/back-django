@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class User(models.Model):
     name = models.CharField(max_length=60)
@@ -9,6 +10,7 @@ class User(models.Model):
     bio = models.CharField(max_length=250)
     password = models.CharField(max_length=150)
     created_at = models.DateField(auto_now_add=True)
+
 
 class Article(models.Model):
     title = models.CharField(max_length=100)

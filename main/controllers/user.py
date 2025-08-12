@@ -85,6 +85,7 @@ def login(request):
             if check_password(password, passwordEncoded):
                 # Serializar usuario para devolver un json luego
                 userLoginSerializer = UserSerializer(userLogin)
+                userLoginData = userLoginSerializer.data
 
                 # Generar token JWT
 

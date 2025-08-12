@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from main.helpers import Helpers
 from main.models import User
 from main.serializers import UserSerializer
 from main.validator import UserValidatorForm
@@ -84,12 +85,19 @@ def login(request):
             # Verificar la contraseña para ver si coincide
             if check_password(password, passwordEncoded):
                 # Serializar usuario para devolver un json luego
-                userLoginSerializer = UserSerializer(userLogin)
-                userLoginData = userLoginSerializer.data
+                userLoginSerializer = UserSerializer(userLogin, many=False)
 
                 # Generar token JWT
+                token = Helpers.generate_jwt_token(userLoginSerializer.data)
 
                 # Devolver respuesta positiva con el usuario y el token
+                return JsonResponse(
+                    {
+                        "status": "success",
+                        "user": userLoginSerializer.data,
+                        "token": token,
+                    }
+                )
             else:
                 return JsonResponse({"error": "Invalid credentials"}, status=401)
 

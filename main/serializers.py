@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.models import Article, User
+from main.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,6 +13,5 @@ class UserSerializer(serializers.ModelSerializer):
             "nick",
             "email",
             "bio",
-            "password",
             "created_at",
         ]

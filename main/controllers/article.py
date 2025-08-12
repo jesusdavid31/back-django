@@ -19,7 +19,7 @@ def save(request):
 
 @csrf_exempt
 def getArticles(request):
-    if request.method == "POST":
+    if request.method == "GET":
 
         return JsonResponse(
             {
